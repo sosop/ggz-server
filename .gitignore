@@ -12,3 +12,4 @@
 *.out
 gitlab_test.go
 .idea/
+bin/
