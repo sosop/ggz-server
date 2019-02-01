@@ -15,6 +15,8 @@ func init() {
 
 	c := cors.AllowAll()
 
-	R.Handle("/config/global", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.CreateGitlab))).Methods("POST")
-	R.Handle("/config/global", negroni.New(c, negroni.WrapFunc(handler.GetGitlab))).Methods("GET")
+	R.Handle("/config/global", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.CreateGitlab))).Methods("POST", "OPTIONS")
+	R.Handle("/config/global", negroni.New(c, negroni.WrapFunc(handler.GetGitlab))).Methods("GET", "OPTIONS")
+	R.Handle("/config/project/setting/{group}/{token}", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.CreateGitlabClient))).Methods("POST", "OPTIONS")
+	R.Handle("/config/project/setting/{group}", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.GetTokens))).Methods("GET", "OPTIONS")
 }

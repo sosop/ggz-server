@@ -1,18 +1,28 @@
 package object
 
-const (
-	Success		= 0
-	ServerERR 	= -1
-	ParamERR 	= -2
+import "github.com/sosop/gitlabClient"
 
-	Gitlab		= "keyForGitlab"
+const (
+	Success			= 0
+	ServerERR 		= -1
+	ParamERR 		= -2
+
+	Gitlab			= "keyForGitlab"
+	GitClient 		= "-keyForTokens"
 )
+
+var GitlabClients =  make(map[string]*gitlabClient.GitLabClient, 1024)
+
+type OwnGroup map[int]string
+
+var Group = OwnGroup{0: "信贷组", 1: "消金组", 2: "金融组", 3: "利卡组", 100: "非业务项目"}
+
 
 // 响应客户端对象
 type ReturnObj struct {
-	Code 	int 		`json: "code"`
-	Msg 	string 		`json: "msg"`
-	Data 	interface{} `json: "data"`
+	Code 	int 		`json:"code"`
+	Msg 	string 		`json:"msg"`
+	Data 	interface{} `json:"data"`
 }
 
 func NewServerErrReturnObj() ReturnObj {

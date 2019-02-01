@@ -12,7 +12,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/rs/cors v1.6.0
-	github.com/sosop/gitlabClient v0.0.0-20190130085257-a1f548ccbedd
+	github.com/sosop/gitlabClient v0.0.0-20190131090952-97fdaf772c5d
 	github.com/urfave/negroni v1.0.0
 	golang.org/x/net v0.0.0-20190125091013-d26f9f9a57f3 // indirect
 	golang.org/x/sys v0.0.0-20190130150945-aca44879d564 // indirect

@@ -38,7 +38,11 @@ func View(key string) ([]byte, error) {
 		if err != nil {
 			return err
 		}
-		value, err = it.ValueCopy(nil)
+		// value, err = it.ValueCopy(nil)
+		it.Value(func (val []byte) error {
+			value = append([]byte{}, val...)
+			return nil
+		})
 		return err
 	})
 	return value, err
