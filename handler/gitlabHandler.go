@@ -8,6 +8,7 @@ import (
 	"ggz-server/store"
 	"github.com/golang/glog"
 	"io/ioutil"
+	"github.com/dgraph-io/badger"
 )
 
 
@@ -46,6 +47,10 @@ func GetGitlab(w http.ResponseWriter, r *http.Request) {
 	data, err := store.View(object.Gitlab)
 	if err != nil {
 		glog.Error(err)
+		if err == badger.ErrKeyNotFound {
+			util.WriteJsonString(w, object.NewSuccessWithDataReturnObj(gitlabClient.GitInfo))
+			return
+		}
 		util.WriteJsonString(w, object.NewServerErrReturnObj())
 		return
 	}

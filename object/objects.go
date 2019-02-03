@@ -17,6 +17,8 @@ type OwnGroup map[int]string
 
 var Group = OwnGroup{0: "信贷组", 1: "消金组", 2: "金融组", 3: "利卡组", 100: "非业务项目"}
 
+type Set map[string]struct{}
+
 
 // 响应客户端对象
 type ReturnObj struct {
