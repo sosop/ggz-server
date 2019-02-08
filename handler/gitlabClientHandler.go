@@ -8,6 +8,8 @@ import (
 	"ggz-server/util"
 	"ggz-server/store"
 	"github.com/dgraph-io/badger"
+	"gitlabClient"
+	"io/ioutil"
 )
 
 
@@ -34,6 +36,10 @@ func CreateGitlabClient(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		glog.Error(err)
 		util.WriteJsonString(w, object.NewServerErrReturnObj())
+	}
+
+	if _, exist := gitlabClient.GitlabClients[token]; !exist {
+		gitlabClient.PushGitlabClient(token)
 	}
 
 	util.WriteJsonString(w, object.NewSuccessReturnObj())
@@ -83,6 +89,46 @@ func DelToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	util.WriteJsonString(w, object.NewSuccessWithDataReturnObj(tokens))
+}
+
+func SearchProject(w http.ResponseWriter, r *http.Request) {
+	data, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		glog.Error(err)
+		util.WriteJsonString(w, object.NewServerErrReturnObj())
+		return
+	}
+
+	// 获取group
+	cache := make(map[string]interface{}, 16)
+	err = util.UnMarshal(data, cache)
+	if err != nil {
+		glog.Error(err)
+		util.WriteJsonString(w, object.NewServerErrReturnObj())
+		return
+	}
+
+	var allTokens object.Set
+	for g, _ := range cache {
+		// 获取token
+		tokens, err := getTokens(g)
+		if err != nil {
+			glog.Error(err)
+			util.WriteJsonString(w, object.NewServerErrReturnObj())
+			return
+		}
+		object.PushSet(allTokens, tokens)
+	}
+
+	// 获取所有项目
+	for token, _ := range allTokens {
+		gitlabClient.GitlabClients[token].ListOwnProject()
+	}
+
+}
+
+func SelectBranch(w http.ResponseWriter, r *http.Request) {
+
 }
 
 func getTokens(group string) (object.Set, error) {

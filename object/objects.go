@@ -1,7 +1,5 @@
 package object
 
-import "github.com/sosop/gitlabClient"
-
 const (
 	Success			= 0
 	ServerERR 		= -1
@@ -11,14 +9,21 @@ const (
 	GitClient 		= "-keyForTokens"
 )
 
-var GitlabClients =  make(map[string]*gitlabClient.GitLabClient, 1024)
-
 type OwnGroup map[int]string
 
 var Group = OwnGroup{0: "信贷组", 1: "消金组", 2: "金融组", 3: "利卡组", 100: "非业务项目"}
 
 type Set map[string]struct{}
 
+func PushEle(set Set, e string) {
+	set[e] = struct{}{}
+}
+
+func PushSet(mergeTo Set, mergeFrom Set) {
+	for k, _ := range mergeFrom {
+		mergeTo[k] = struct{}{}
+	}
+}
 
 // 响应客户端对象
 type ReturnObj struct {
