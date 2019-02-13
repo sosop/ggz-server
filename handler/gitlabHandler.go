@@ -8,15 +8,7 @@ import (
 	"ggz-server/store"
 	"github.com/golang/glog"
 	"io/ioutil"
-	"github.com/dgraph-io/badger"
 )
-
-
-func init() {
-	// 初始化gitinfo
-	gitlabClient.GitInfo = gitlabClient.NewGitlabInfo(nil, "")
-}
-
 
 func CreateGitlab(w http.ResponseWriter, r *http.Request) {
 	data, err := ioutil.ReadAll(r.Body)
@@ -44,21 +36,5 @@ func CreateGitlab(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetGitlab(w http.ResponseWriter, r *http.Request) {
-	data, err := store.View(object.Gitlab)
-	if err != nil {
-		glog.Error(err)
-		if err == badger.ErrKeyNotFound {
-			util.WriteJsonString(w, object.NewSuccessWithDataReturnObj(gitlabClient.GitInfo))
-			return
-		}
-		util.WriteJsonString(w, object.NewServerErrReturnObj())
-		return
-	}
-	err = util.UnMarshal(data, gitlabClient.GitInfo)
-	if err != nil {
-		glog.Error(err)
-		util.WriteJsonString(w, object.NewServerErrReturnObj())
-		return
-	}
 	util.WriteJsonString(w, object.NewSuccessWithDataReturnObj(gitlabClient.GitInfo))
 }

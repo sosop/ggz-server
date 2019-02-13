@@ -8,9 +8,40 @@ import (
 	"ggz-server/util"
 	"ggz-server/store"
 	"github.com/dgraph-io/badger"
-	"gitlabClient"
+	"github.com/sosop/gitlabClient"
 	"io/ioutil"
 )
+
+// 初始化gitlabinfo
+func init() {
+	gitlabClient.GitInfo = gitlabClient.NewGitlabInfo(nil, "")
+
+	data, err := store.View(object.Gitlab)
+	if err != nil {
+		glog.Error(err)
+		if err == badger.ErrKeyNotFound {
+			return
+		}
+		panic(err)
+	}
+	err = util.UnMarshal(data, gitlabClient.GitInfo)
+	if err != nil {
+		panic(err)
+	}
+}
+
+// 初始化gitlab.client
+func init() {
+	for g := range object.Group {
+		tokens, err := getTokens(g)
+		if err != nil {
+			panic(err)
+		}
+		for token := range tokens {
+			gitlabClient.PushGitlabClient(token)
+		}
+	}
+}
 
 
 func CreateGitlabClient(w http.ResponseWriter, r *http.Request) {
@@ -100,16 +131,16 @@ func SearchProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 获取group
-	cache := make(map[string]interface{}, 16)
-	err = util.UnMarshal(data, cache)
+	cache := make([]string, 16)
+	err = util.UnMarshal(data, &cache)
 	if err != nil {
 		glog.Error(err)
 		util.WriteJsonString(w, object.NewServerErrReturnObj())
 		return
 	}
 
-	var allTokens object.Set
-	for g, _ := range cache {
+	allTokens := make(object.Set, 16)
+	for _, g := range cache {
 		// 获取token
 		tokens, err := getTokens(g)
 		if err != nil {
@@ -121,13 +152,52 @@ func SearchProject(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 获取所有项目
-	for token, _ := range allTokens {
-		gitlabClient.GitlabClients[token].ListOwnProject()
-	}
+	allProjs := make([]gitlabClient.ProjectInfo, 0, 1024)
+	for token := range allTokens {
+		projs, err := gitlabClient.GitlabClients[token].ListProjects()
+		if err != nil {
+			glog.Error(err)
+			util.WriteJsonString(w, object.NewServerErrReturnObj())
+			return
+		}
 
+		if projs != nil && len(projs) > 0 {
+			allProjs = append(allProjs, projs...)
+		}
+	}
+	util.WriteJsonString(w, object.NewSuccessWithDataReturnObj(util.DistictProject(allProjs)))
 }
 
 func SelectBranch(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	token := vars["token"]
+
+	if id == "" || token == "" {
+		glog.Error("project id or token 为空")
+		util.WriteJsonString(w, object.NewParamErrReturnObj())
+		return
+	}
+
+	if git, ok := gitlabClient.GitlabClients[token]; ok {
+		data, err := git.ListBranch(id)
+		if err != nil {
+			glog.Error(err)
+			util.WriteJsonString(w, object.NewServerErrReturnObj())
+			return
+		}
+		result := make([]interface{}, 0, 512)
+		err = util.UnMarshal(data, &result)
+		if err != nil {
+			glog.Error(err)
+			util.WriteJsonString(w, object.NewServerErrReturnObj())
+			return
+		}
+		util.WriteJsonString(w, object.NewSuccessWithDataReturnObj(result))
+		return
+	}
+
+	util.WriteJsonString(w, object.NewParamErrReturnObj())
 
 }
 
@@ -137,12 +207,12 @@ func getTokens(group string) (object.Set, error) {
 		if err == badger.ErrKeyNotFound {
 			return object.Set{}, nil
 		}
-		return nil, err;
+		return nil, err
 	}
 	var tokens object.Set
 	err = util.UnMarshal(data, &tokens)
 	if err != nil {
-		return nil, err;
+		return nil, err
 	}
 	return tokens, nil
 }

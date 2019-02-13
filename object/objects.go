@@ -9,9 +9,9 @@ const (
 	GitClient 		= "-keyForTokens"
 )
 
-type OwnGroup map[int]string
+type OwnGroup map[string]string
 
-var Group = OwnGroup{0: "信贷组", 1: "消金组", 2: "金融组", 3: "利卡组", 100: "非业务项目"}
+var Group = OwnGroup{"0": "信贷组", "1": "消金组", "2": "金融组", "3": "利卡组", "100": "非业务项目"}
 
 type Set map[string]struct{}
 

@@ -20,4 +20,6 @@ func init() {
 	R.Handle("/config/project/setting/{group}/{token}", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.CreateGitlabClient))).Methods("POST", "OPTIONS")
 	R.Handle("/config/project/setting/{group}", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.GetTokens))).Methods("GET", "OPTIONS")
 	R.Handle("/config/project/setting/{group}/{token}", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.DelToken))).Methods("DELETE", "OPTIONS")
+	R.Handle("/build/projects", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.SearchProject))).Methods("POST", "OPTIONS")
+	R.Handle("/build/project/{id}/{token}", negroni.New(c, middlewares.ParseFormMiddlerware, negroni.WrapFunc(handler.SelectBranch))).Methods("POST", "OPTIONS")
 }
