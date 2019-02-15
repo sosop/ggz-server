@@ -1,8 +1,11 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "gitlab操作接口"
+    "description": "gitlab客户端操作接口",
+    "title": "gitlab client API",
+    "version": "0.1.0"
   },
+  "host": "localhost",
   "paths": {},
   "responses": {
     "ReturnObj": {

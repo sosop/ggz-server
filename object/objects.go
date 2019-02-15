@@ -32,6 +32,7 @@ func PushSet(mergeTo Set, mergeFrom Set) {
 
 // 响应客户端对象
 // swagger:response ReturnObj
+// in: ReturnObj
 type ReturnObj struct {
 	Code 	int 		`json:"code"`
 	Msg 	string 		`json:"msg"`

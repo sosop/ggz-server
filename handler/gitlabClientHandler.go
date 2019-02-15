@@ -1,5 +1,11 @@
 /**
-gitlab操作接口
+Package classification gitlab client API
+
+gitlab客户端操作接口
+
+Host: localhost
+Version: 0.1.0
+
 swagger:meta
 */
 package handler
