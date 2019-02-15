@@ -1,0 +1,25 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "gitlab操作接口"
+  },
+  "paths": {},
+  "responses": {
+    "ReturnObj": {
+      "description": "响应客户端对象",
+      "schema": {
+        "type": "object"
+      },
+      "headers": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {},
+        "msg": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

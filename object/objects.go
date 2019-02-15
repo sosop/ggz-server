@@ -7,6 +7,8 @@ const (
 
 	Gitlab			= "keyForGitlab"
 	GitClient 		= "-keyForTokens"
+
+	BuildProjList	= "buildProjects"
 )
 
 type OwnGroup map[string]string
@@ -29,6 +31,7 @@ func PushSet(mergeTo Set, mergeFrom Set) {
 }
 
 // 响应客户端对象
+// swagger:response ReturnObj
 type ReturnObj struct {
 	Code 	int 		`json:"code"`
 	Msg 	string 		`json:"msg"`
