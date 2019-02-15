@@ -40,9 +40,7 @@ func View(key string) ([]byte, error) {
 		}
 		// value, err = it.ValueCopy(nil)
 		value, err = it.Value()
-		if err != nil {
-			return err
-		}
+		return err
 	})
 	return value, err
 }
