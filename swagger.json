@@ -1,0 +1,28 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "gitlab客户端操作接口",
+    "title": "gitlab client API",
+    "version": "0.1.0"
+  },
+  "host": "localhost",
+  "paths": {},
+  "responses": {
+    "ReturnObj": {
+      "description": "响应客户端对象",
+      "schema": {
+        "type": "object"
+      },
+      "headers": {
+        "code": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "data": {},
+        "msg": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

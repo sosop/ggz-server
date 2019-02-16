@@ -7,11 +7,16 @@ const (
 
 	Gitlab			= "keyForGitlab"
 	GitClient 		= "-keyForTokens"
+
+	BuildProjList	= "buildProjects"
 )
 
 type OwnGroup map[string]string
 
-var Group = OwnGroup{"0": "信贷组", "1": "消金组", "2": "金融组", "3": "利卡组", "100": "非业务项目"}
+var (
+	Group = OwnGroup{"0": "信贷组", "1": "消金组", "2": "金融组", "3": "利卡组", "100": "非业务项目"}
+	WebhookAddr = ""
+)
 
 type Set map[string]struct{}
 
@@ -26,6 +31,8 @@ func PushSet(mergeTo Set, mergeFrom Set) {
 }
 
 // 响应客户端对象
+// swagger:response ReturnObj
+// in: ReturnObj
 type ReturnObj struct {
 	Code 	int 		`json:"code"`
 	Msg 	string 		`json:"msg"`

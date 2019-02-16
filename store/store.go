@@ -39,7 +39,7 @@ func View(key string) ([]byte, error) {
 			return err
 		}
 		// value, err = it.ValueCopy(nil)
-		it.Value(func (val []byte) error {
+		err = it.Value(func(val []byte) error {
 			value = append([]byte{}, val...)
 			return nil
 		})

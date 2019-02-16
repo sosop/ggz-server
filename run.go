@@ -11,6 +11,7 @@ import (
 	"context"
 	"flag"
 	"ggz-server/store"
+	"ggz-server/object"
 )
 
 
@@ -36,6 +37,7 @@ func main() {
 		if err := srv.ListenAndServe(); err != nil {
 			glog.Error(err)
 		}
+		object.WebhookAddr = srv.Addr
 	}()
 
 	gracefulStop := make(chan os.Signal, 1)

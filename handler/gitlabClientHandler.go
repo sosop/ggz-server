@@ -1,3 +1,13 @@
+/**
+Package classification gitlab client API
+
+gitlab客户端操作接口
+
+Host: localhost
+Version: 0.1.0
+
+swagger:meta
+*/
 package handler
 
 import (
@@ -45,6 +55,14 @@ func init() {
 
 
 func CreateGitlabClient(w http.ResponseWriter, r *http.Request) {
+	/**
+		swagger:route POST /config/project/setting/{group}/{token}
+
+	 	添加privateToken
+
+		Responses:
+			200: ReturnObj
+	*/
 	vars := mux.Vars(r)
 	group := vars["group"]
 	token := vars["token"]
