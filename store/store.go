@@ -42,7 +42,7 @@ func View(key string) ([]byte, error) {
 		err = it.Value(func(val []byte) error {
 			value = append([]byte{}, val...)
 			return nil
-		})
+		});
 		return err
 	})
 	return value, err
