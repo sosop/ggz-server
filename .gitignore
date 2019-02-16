@@ -13,3 +13,7 @@
 gitlab_test.go
 .idea/
 bin/
+vendor/
+
+# go build file
+ggz-server
