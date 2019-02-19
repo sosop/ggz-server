@@ -55,14 +55,7 @@ func init() {
 
 
 func CreateGitlabClient(w http.ResponseWriter, r *http.Request) {
-	/**
-		swagger:route POST /config/project/setting/{group}/{token}
-
-	 	添加privateToken
-
-		Responses:
-			200: ReturnObj
-	*/
+	// swagger:route POST /config/project/setting/{group}/{token} [group token] createGitlabClient
 	vars := mux.Vars(r)
 	group := vars["group"]
 	token := vars["token"]
